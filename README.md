@@ -27,6 +27,8 @@ This is a fork of the VRX/WAMV sim. To get started:
    ⚠️ Note that you must build with `colcon build --merge-install`, and that using `--symlink-install` will not work!
 
 
+4. After building, you may run the default example sim using `ros2 launch vrx_gz competition.launch.py world:=sydney_regatta`
+
 
 # Virtual RobotX (VRX)
 This repository is the home to the source code and software documentation for the VRX simulation environment, which supports simulation of unmanned surface vehicles in marine environments.
