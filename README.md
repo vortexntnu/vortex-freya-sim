@@ -1,3 +1,33 @@
+# Get started
+This is a fork of the VRX/WAMV sim. To get started:
+
+1. Make sure ROS2 Humble and Gazebo Garden is installed. For ROS2, just follow the official docs.  
+    For Gazebo Garden:
+    ```
+    sudo apt-get update && sudo apt-get install lsb-release curl gnupg
+    ```
+    ```
+    sudo curl https://packages.osrfoundation.org/gazebo.gpg --output /usr/share/keyrings/pkgs-osrf-archive-keyring.gpg
+    ```
+
+    ```
+    echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/pkgs-osrf-archive-keyring.gpg] http://packages.osrfoundation.org/gazebo/ubuntu-stable $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/gazebo-stable.list > /dev/null
+    ```
+    ```
+    sudo apt-get update && sudo apt-get install gz-garden
+    ```
+2. Install additional dependencies
+
+    ```
+    sudo apt install python3-sdformat13 ros-humble-ros-gzgarden ros-humble-xacro
+    ```
+
+3. Lastly, clone and build this repo.
+
+   ⚠️ Note that you must build with `colcon build --merge-install`, and that using `--symlink-install` will not work!
+
+
+
 # Virtual RobotX (VRX)
 This repository is the home to the source code and software documentation for the VRX simulation environment, which supports simulation of unmanned surface vehicles in marine environments.
 * Designed in coordination with RobotX organizers, this project provides arenas and tasks similar to those featured in past and future RobotX competitions, as well as a description of the WAM-V platform.
