@@ -2,8 +2,12 @@
 #include <std_msgs/msg/float32_multi_array.hpp>
 #include <std_msgs/msg/float64.hpp>
 #include <nav_msgs/msg/odometry.hpp>
+#include <tf2/transform_datatypes.h>
 #include <tf2/LinearMath/Quaternion.h>
 #include <tf2/LinearMath/Matrix3x3.h>
+#include "tf2_ros/transform_broadcaster.h"
+#include <tf2_ros/static_transform_broadcaster.h>
+#include <sensor_msgs/msg/point_cloud2.hpp>
 #include <vector>
 #include <cmath>
 
@@ -37,6 +41,18 @@ public:
 
         odom_pub_ = this->create_publisher<nav_msgs::msg::Odometry>("/seapath/odom/ned", qos_sensor_data);
 
+        tf_broadcaster_ = std::make_unique<tf2_ros::TransformBroadcaster>(*this);
+        static_tf_broadcaster_ = std::make_unique<tf2_ros::StaticTransformBroadcaster>(*this);
+
+        pcl_pub_ = this->create_publisher<sensor_msgs::msg::PointCloud2>("/ouster/points", qos_sensor_data);
+
+        pcl_sub_ = this->create_subscription<sensor_msgs::msg::PointCloud2>(
+            "/wamv/sensors/lidars/lidar_wamv_sensor/points", qos_sensor_data,
+            [this](const sensor_msgs::msg::PointCloud2::SharedPtr msg) {
+                msg->header.frame_id = "os_lidar";
+                pcl_pub_->publish(*msg);
+            });
+
         RCLCPP_INFO(this->get_logger(), "VortexSimInterface node initialized");
     }
 
@@ -50,6 +66,14 @@ private:
 
     rclcpp::Subscription<nav_msgs::msg::Odometry>::SharedPtr odom_sub_;
     rclcpp::Publisher<nav_msgs::msg::Odometry>::SharedPtr odom_pub_;
+
+    std::shared_ptr<tf2_ros::TransformBroadcaster> tf_broadcaster_;
+    std::shared_ptr<tf2_ros::StaticTransformBroadcaster> static_tf_broadcaster_;
+
+    rclcpp::Subscription<sensor_msgs::msg::PointCloud2>::SharedPtr pcl_sub_;
+    rclcpp::Publisher<sensor_msgs::msg::PointCloud2>::SharedPtr pcl_pub_;
+
+    bool map_tf_set_ = false;
 
     void thruster_callback(const std_msgs::msg::Float32MultiArray::SharedPtr msg)
     {
@@ -88,6 +112,49 @@ private:
         ned_msg->twist.twist.angular.x = msg->twist.twist.angular.y;
         ned_msg->twist.twist.angular.y = msg->twist.twist.angular.x;
         ned_msg->twist.twist.angular.z = -msg->twist.twist.angular.z;
+
+        if (!map_tf_set_){
+            geometry_msgs::msg::TransformStamped static_transform;
+            static_transform.header.stamp = msg->header.stamp;
+            static_transform.header.frame_id = "map";
+            static_transform.child_frame_id = "odom";
+            static_transform.transform.translation.x = 0.0;
+            static_transform.transform.translation.y = 0.0;
+            static_transform.transform.translation.z = 0.0;
+            static_transform.transform.rotation.x = 0.0;
+            static_transform.transform.rotation.y = 0.0;
+            static_transform.transform.rotation.z = 0.0;
+            static_transform.transform.rotation.w = 1.0;
+            static_tf_broadcaster_->sendTransform(static_transform);
+
+            geometry_msgs::msg::TransformStamped map_viz_tf;
+            map_viz_tf.header.stamp = msg->header.stamp;
+            map_viz_tf.header.frame_id = "map";
+            map_viz_tf.child_frame_id = "map_viz";
+            map_viz_tf.transform.translation.x = 0.0;
+            map_viz_tf.transform.translation.y = 0.0;
+            map_viz_tf.transform.translation.z = 0.0;
+            map_viz_tf.transform.rotation.x = 0.0;
+            map_viz_tf.transform.rotation.y = 1.0;
+            map_viz_tf.transform.rotation.z = 0.0;
+            map_viz_tf.transform.rotation.w = 0.0;
+            static_tf_broadcaster_->sendTransform(map_viz_tf);
+
+            map_tf_set_ = true;
+        }
+
+        geometry_msgs::msg::TransformStamped transform;
+        transform.header.stamp = msg->header.stamp;
+        transform.header.frame_id = "odom";
+        transform.child_frame_id = "seapath";
+
+        transform.transform.translation.x = ned_msg->pose.pose.position.x;
+        transform.transform.translation.y = ned_msg->pose.pose.position.y;
+        transform.transform.translation.z = ned_msg->pose.pose.position.z;
+
+        transform.transform.rotation = ned_msg->pose.pose.orientation;
+
+        tf_broadcaster_->sendTransform(transform);
 
         odom_pub_->publish(std::move(ned_msg));
     }
