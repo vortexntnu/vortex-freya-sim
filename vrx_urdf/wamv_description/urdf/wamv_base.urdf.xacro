@@ -118,8 +118,8 @@
 
     <inertial>
       <!-- From WAM-V spec sheet -->
-      <mass value="180.0"/>
-      <inertia ixx="120.0" ixy="0.0" ixz="0.0" iyy="393" iyz="0.0" izz="446.0"/>
+      <mass value="70.0"/>
+      <inertia ixx="90.5" ixy="0.0" ixz="0.0" iyy="167.5" iyz="12.25" izz="42.65"/>
     </inertial>
   </link>
 
