@@ -1,5 +1,7 @@
 FROM ros:humble-perception
 
+RUN ln -sf /bin/bash /bin/sh  # Default to using bash > sh
+
 WORKDIR /ros_ws
 
 RUN mkdir -p /ros_ws/src
