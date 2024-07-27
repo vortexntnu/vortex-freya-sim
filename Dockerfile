@@ -8,4 +8,4 @@ COPY . /ros_ws/src
 
 RUN source /opt/ros/humble/setup.bash && cd /ros_ws && colcon build --merge-install
 
-ENTRYPOINT["/bin/bash", "-c", "/ros_ws/src/vortex_sim_interface/run_sim.sh"]
+ENTRYPOINT ["/bin/bash", "-c", "/ros_ws/src/vortex_sim_interface/run_sim.sh"]
