@@ -8,6 +8,7 @@
 #include "tf2_ros/transform_broadcaster.h"
 #include <tf2_ros/static_transform_broadcaster.h>
 #include <sensor_msgs/msg/point_cloud2.hpp>
+#include <geometry_msgs/msg/point.hpp>
 #include <vector>
 #include <cmath>
 
@@ -74,6 +75,8 @@ private:
     rclcpp::Publisher<sensor_msgs::msg::PointCloud2>::SharedPtr pcl_pub_;
 
     bool map_tf_set_ = false;
+    bool first_odom_received_ = false;
+    geometry_msgs::msg::Point initial_position_;
 
     void thruster_callback(const std_msgs::msg::Float32MultiArray::SharedPtr msg)
     {
@@ -94,14 +97,19 @@ private:
 
     void odometry_callback(const nav_msgs::msg::Odometry::SharedPtr msg)
     {
+        if (!first_odom_received_) {
+            initial_position_ = msg->pose.pose.position;
+            first_odom_received_ = true;
+        }
+
         auto ned_msg = std::make_unique<nav_msgs::msg::Odometry>();
 
         ned_msg->header = msg->header;
         ned_msg->child_frame_id = "wamv/wamv/base_link";
 
-        ned_msg->pose.pose.position.x = msg->pose.pose.position.y;
-        ned_msg->pose.pose.position.y = msg->pose.pose.position.x;
-        ned_msg->pose.pose.position.z = -msg->pose.pose.position.z;
+        ned_msg->pose.pose.position.x = msg->pose.pose.position.y - initial_position_.y;
+        ned_msg->pose.pose.position.y = msg->pose.pose.position.x - initial_position_.x;
+        ned_msg->pose.pose.position.z = -msg->pose.pose.position.z - initial_position_.z;
 
         ned_msg->pose.pose.orientation = enu_to_ned_quaternion(msg->pose.pose.orientation);
 
