@@ -113,8 +113,8 @@ private:
 
         ned_msg->pose.pose.orientation = enu_to_ned_quaternion(msg->pose.pose.orientation);
 
-        ned_msg->twist.twist.linear.x = msg->twist.twist.linear.y;
-        ned_msg->twist.twist.linear.y = msg->twist.twist.linear.x;
+        ned_msg->twist.twist.linear.x = msg->twist.twist.linear.x;
+        ned_msg->twist.twist.linear.y = msg->twist.twist.linear.y;
         ned_msg->twist.twist.linear.z = -msg->twist.twist.linear.z;
 
         ned_msg->twist.twist.angular.x = msg->twist.twist.angular.y;
