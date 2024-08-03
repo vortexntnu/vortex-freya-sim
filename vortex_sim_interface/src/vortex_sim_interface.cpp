@@ -44,8 +44,8 @@ public:
 
         pcl_pub_ = this->create_publisher<sensor_msgs::msg::PointCloud2>("/ouster/points", qos_sensor_data);
 
-        map_origin_lat_ = -33.722526870713736;
-        map_origin_lon_ = 150.67413849891247;
+        map_origin_lat_ = -33.72242824301795;
+        map_origin_lon_ = 150.6740063854522;
 
         gps_sub_ = this->create_subscription<sensor_msgs::msg::NavSatFix>(
             "/wamv/sensors/gps/gps/fix", qos_sensor_data,
