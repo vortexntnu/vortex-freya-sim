@@ -18,6 +18,7 @@ from launch.actions import DeclareLaunchArgument
 from launch.actions import OpaqueFunction
 from launch.substitutions import LaunchConfiguration
 import os
+import numpy as np
 
 import vrx_gz.launch
 from vrx_gz.model import Model
@@ -43,7 +44,7 @@ def launch(context, *args, **kwargs):
         with open(config_file, 'r') as stream:
             models = Model.FromConfig(stream)
     else:
-      m = Model('wamv', 'wam-v', [-532, 162, 0, 0, 0, 1])
+      m = Model('wamv', 'wam-v', [-537, 186, 0, 0, 0, np.pi/2])
       if robot_urdf and robot_urdf != '':
           m.set_urdf(robot_urdf)
       models.append(m)
