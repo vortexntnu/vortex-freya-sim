@@ -2,7 +2,7 @@
 <sdf version="1.6">
   <model name="cpu_cases">
     <link name="cpu_cases_link">
-      <visual name="cpu_cases_visual">
+      <!-- <visual name="cpu_cases_visual">
         <pose>0.073 0 -1.53 0 0 0</pose>
         <geometry>
           <mesh> 
@@ -11,8 +11,8 @@
             </uri>
           </mesh>
         </geometry>
-      </visual>
-      <collision name="cpu_case_1_collision">
+      </visual> -->
+      <!-- <collision name="cpu_case_1_collision">
         <pose>0.185 0 0 0 0 0</pose>
         <geometry>
           <box><size>0.595 0.83 0.47</size></box>
@@ -23,7 +23,7 @@
         <geometry>
           <box><size>0.375 0.64 0.28</size></box>
         </geometry>
-      </collision>
+      </collision> -->
       <inertial>
         <mass>20</mass>
         <inertia>

@@ -11,7 +11,7 @@ tmux rename-window -t $SESSION_NAME:0 'asv_setup'
 tmux send-keys -t $SESSION_NAME:0 'ros2 launch asv_setup sim_freya.launch.py' C-m
 
 tmux new-window -t $SESSION_NAME:1 -n 'vrx_gz'
-tmux send-keys -t $SESSION_NAME:1 'ros2 launch vrx_gz competition.launch.py world:=sydney_regatta' C-m
+tmux send-keys -t $SESSION_NAME:1 'ros2 launch vrx_gz competition.launch.py world:=Njord_navigation' C-m
 
 tmux attach-session -t $SESSION_NAME
 

@@ -2,7 +2,7 @@
 <robot xmlns:xacro="http://ros.org/wiki/xacro" name="wam-v-cpu_cases">
 <xacro:macro name="cpu_cases" params="position:='0 0 0' orientation:='0 0 0'">
   <link name="${namespace}/cpu_cases_link">
-    <visual>
+    <!-- <visual>
       <origin xyz="0.073 0 -1.53" rpy="0 0 0"/>
       <geometry>
         <mesh filename="package://vrx_gazebo/models/cpu_cases/mesh/cpu_cases.dae"/>
@@ -19,7 +19,7 @@
       <geometry>
         <box size="0.375 0.64 0.28"/>
       </geometry>
-    </collision>
+    </collision> -->
     <inertial>
       <mass value="20"/>
       <inertia
@@ -38,7 +38,7 @@
   </joint>
 
   <gazebo reference="${namespace}/cpu_cases_link">
-    <visual>
+    <!-- <visual>
       <material>
         <diffuse>1.0 1.0 1.0</diffuse>
         <specular>1.0 1.0 1.0</specular>
@@ -51,7 +51,7 @@
           </metal>
         </pbr>
       </material>
-    </visual>
+    </visual> -->
   </gazebo>
 
 </xacro:macro>
