@@ -44,7 +44,7 @@ def launch(context, *args, **kwargs):
         with open(config_file, 'r') as stream:
             models = Model.FromConfig(stream)
     else:
-        m = Model('wamv', 'wam-v', [-535, 197, 0, 0, 0, 0])
+        m = Model('wamv', 'wam-v', [-535, 197.5, 0, 0, 0, 0])
         if robot_urdf and robot_urdf != '':
             m.set_urdf(robot_urdf)
         models.append(m)
@@ -73,7 +73,7 @@ def generate_launch_description():
         # Launch Arguments
         DeclareLaunchArgument(
             'world',
-            default_value='sydney_regatta',
+            default_value='njord_colav_tasks',
             description='Name of world'),
         DeclareLaunchArgument(
             'sim_mode',
