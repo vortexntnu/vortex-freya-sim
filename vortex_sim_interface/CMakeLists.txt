@@ -13,11 +13,17 @@ find_package(tf2 REQUIRED)
 find_package(tf2_ros REQUIRED)
 find_package(geometry_msgs REQUIRED)
 find_package(sensor_msgs REQUIRED)
+find_package(Python3 REQUIRED)
 
 add_executable(vortex_sim_interface src/vortex_sim_interface.cpp)
 target_include_directories(vortex_sim_interface PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:include>)
+
+install(PROGRAMS
+  src/otter_sim_interface.py
+  DESTINATION lib/${PROJECT_NAME}
+)
 
 
 ament_target_dependencies(vortex_sim_interface
