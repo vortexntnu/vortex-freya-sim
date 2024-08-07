@@ -44,10 +44,16 @@ def launch(context, *args, **kwargs):
         with open(config_file, 'r') as stream:
             models = Model.FromConfig(stream)
     else:
-      m = Model('wamv', 'wam-v', [-537, 186, 0, 0, 0, np.pi/2])
-      if robot_urdf and robot_urdf != '':
-          m.set_urdf(robot_urdf)
-      models.append(m)
+    #   m = Model('wamv', 'wam-v', [-537, 186, 0, 0, 0, np.pi/2]) # Maneuvering and navigation
+        m = Model('wamv', 'wam-v', [-535, 197.5, 0, 0, 0, 0]) # Task 3.1
+        if robot_urdf and robot_urdf != '':
+            m.set_urdf(robot_urdf)
+        models.append(m)
+
+        # Otter colav
+        otter = Model('otter', 'wam-v', [-515, 185, 0, 0, 0, np.pi/2])
+        otter.set_urdf(robot_urdf)
+        models.append(otter)
 
     world_name, ext = os.path.splitext(world_name)
     launch_processes.extend(vrx_gz.launch.simulation(world_name, headless, 
