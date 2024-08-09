@@ -51,8 +51,7 @@ def launch(context, *args, **kwargs):
 
         # Vortex Njord Collision avoidance tasks
         # otter = Model('otter', 'wam-v', [-513, 177, 0, 0, 0, np.pi/2]) # Task 3.1
-        otter = Model('otter', 'wam-v', [-486, 187, 0, 0, 0, np.pi]) # Task 3.2
-
+        otter = Model('otter', 'wam-v', [-515, 185, 0, 0, 0, np.pi/2])
         otter.set_urdf(robot_urdf)
         models.append(otter)
 
